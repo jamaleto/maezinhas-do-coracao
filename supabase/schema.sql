@@ -33,6 +33,8 @@ create table if not exists public.gestantes (
   quer_kit boolean default true,
   consentimento boolean not null default false,
   consentimento_em timestamptz,
+  kit_agendado boolean not null default false,
+  kit_agendado_em timestamptz,
   kit_entregue boolean not null default false,
   kit_entregue_em timestamptz,
   criado_em timestamptz not null default now(),
@@ -73,3 +75,54 @@ create policy "Admin atualiza"
 
 -- Observação: o cadastro público NÃO consegue ler os próprios dados de volta
 -- nem ver dados de outras pessoas — isso é proposital, para proteger a privacidade.
+
+-- IMPORTANTE: por uma particularidade do Postgres, o INSERT direto via API acima
+-- falha quando combinado com RETURNING (usado internamente pelo Supabase). Por isso,
+-- o cadastro público é feito através desta função seguraque grava os dados sem
+-- exigir permissão de leitura para o público:
+create or replace function public.cadastrar_gestante(
+  p_nome text,
+  p_nascimento date,
+  p_cpf text,
+  p_rg text,
+  p_endereco text,
+  p_cep text,
+  p_regiao text,
+  p_email text,
+  p_tel1 text,
+  p_tel2 text,
+  p_tel3 text,
+  p_sus text,
+  p_posto text,
+  p_semanas_gestacao int,
+  p_gestacao_risco text,
+  p_observacoes text,
+  p_quer_kit boolean,
+  p_consentimento boolean
+) returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if not p_consentimento then
+    raise exception 'Consentimento obrigatorio';
+  end if;
+  if p_cpf is null and p_rg is null then
+    raise exception 'Informe CPF ou RG';
+  end if;
+
+  insert into public.gestantes (
+    nome, nascimento, cpf, rg, endereco, cep, regiao, email,
+    tel1, tel2, tel3, sus, posto, semanas_gestacao, gestacao_risco,
+    observacoes, quer_kit, consentimento, consentimento_em
+  ) values (
+    p_nome, p_nascimento, p_cpf, p_rg, p_endereco, p_cep, p_regiao, p_email,
+    p_tel1, p_tel2, p_tel3, p_sus, p_posto, p_semanas_gestacao, p_gestacao_risco,
+    p_observacoes, p_quer_kit, true, now()
+  );
+end;
+$$;
+
+revoke all on function public.cadastrar_gestante from public;
+grant execute on function public.cadastrar_gestante to anon;

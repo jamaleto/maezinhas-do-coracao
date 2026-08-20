@@ -26,13 +26,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="max-w-6xl mx-auto px-6 md:px-8 py-8">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2.5">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <path
-              d="M16 27C16 27 4 20.2 4 12.4C4 8.3 7.2 5 11.1 5C13.2 5 15.1 6 16 7.6C16.9 6 18.8 5 20.9 5C24.8 5 28 8.3 28 12.4C28 20.2 16 27 16 27Z"
-              fill="#C6707A"
-            />
-          </svg>
+        <div className="flex items-center gap-3">
+          <img src="/logo-maezinhas.jpg" alt="Mãezinhas do Coração" className="w-10 h-10 rounded-full object-cover" />
           <h1 className="text-lg font-semibold">Mãezinhas do Coração — Admin</h1>
         </div>
         <div className="flex items-center gap-2.5">
@@ -45,12 +40,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </div>
 
-      <div className="flex gap-1.5 border-b border-line mb-7">
+      <div className="flex gap-8 border-b border-line mb-8">
         {TABS.map((t) => (
           <Link
             key={t.href}
             href={t.href}
-            className={`px-4.5 py-3 text-sm font-semibold border-b-2 ${
+            className={`px-2 py-4 text-lg font-semibold border-b-[3px] ${
               pathname === t.href
                 ? "text-rose-dark border-rose"
                 : "text-inksoft border-transparent hover:text-ink"

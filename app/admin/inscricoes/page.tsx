@@ -19,6 +19,19 @@ export default function InscricoesPage() {
     carregar();
   }, []);
 
+  async function marcarAgendado(id: string) {
+    const { error } = await supabase
+      .from("gestantes")
+      .update({ kit_agendado: true, kit_agendado_em: new Date().toISOString() })
+      .eq("id", id);
+
+    if (error) {
+      alert("Não foi possível salvar. Tente novamente.");
+      return;
+    }
+    carregar();
+  }
+
   async function marcarEntregue(id: string) {
     const { error } = await supabase
       .from("gestantes")
@@ -52,13 +65,13 @@ export default function InscricoesPage() {
       {!filtrados.length ? (
         <div className="text-center py-12 text-inksoft">Nenhuma inscrição encontrada.</div>
       ) : (
-        <table className="w-full text-[13.5px] border-collapse">
+        <table className="w-full text-base border-collapse">
           <thead>
             <tr className="text-left">
               {["Nome", "Região", "Posto", "Telefone", "Gestação", "Kit", "Ações"].map((h) => (
                 <th
                   key={h}
-                  className="text-inksoft font-semibold text-[12px] uppercase tracking-wide pb-2.5 border-b-[1.5px] border-line px-2"
+                  className="text-inksoft font-semibold text-[13px] uppercase tracking-wide pb-3 border-b-[1.5px] border-line px-3"
                 >
                   {h}
                 </th>
@@ -69,42 +82,56 @@ export default function InscricoesPage() {
             {filtrados.map((r) => (
               <>
                 <tr key={r.id} className="border-b border-line">
-                  <td className="p-3">{r.nome}</td>
-                  <td className="p-3">{r.regiao}</td>
-                  <td className="p-3">{r.posto || "—"}</td>
-                  <td className="p-3">{r.tel1}</td>
-                  <td className="p-3">{r.semanas_gestacao ?? "—"} sem.</td>
-                  <td className="p-3">
+                  <td className="p-4">{r.nome}</td>
+                  <td className="p-4">{r.regiao}</td>
+                  <td className="p-4">{r.posto || "—"}</td>
+                  <td className="p-4">{r.tel1}</td>
+                  <td className="p-4">{r.semanas_gestacao ?? "—"} sem.</td>
+                  <td className="p-4">
                     {r.kit_entregue ? (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-teal-tint text-teal-dark">
+                      <span className="px-3 py-1.5 rounded-full text-sm font-semibold bg-teal-tint text-teal-dark">
                         Entregue
                       </span>
+                    ) : r.kit_agendado ? (
+                      <span className="px-3 py-1.5 rounded-full text-sm font-semibold bg-[#FBEDD3] text-[#8A5E13]">
+                        Agendado
+                      </span>
                     ) : (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-[#FBE9D6] text-[#946B1F]">
+                      <span className="px-3 py-1.5 rounded-full text-sm font-semibold bg-[#EFE9E7] text-[#7A6670]">
                         Pendente
                       </span>
                     )}
                   </td>
-                  <td className="p-3 whitespace-nowrap">
-                    <button
-                      onClick={() => setAberto(aberto === r.id ? null : r.id)}
-                      className="btn btn-ghost !text-xs !py-1.5 !px-3 mr-2"
-                    >
-                      Detalhes
-                    </button>
-                    {!r.kit_entregue && (
+                  <td className="p-4">
+                    <div className="flex flex-wrap gap-3">
                       <button
-                        onClick={() => marcarEntregue(r.id)}
-                        className="btn btn-teal !text-xs !py-1.5 !px-3"
+                        onClick={() => setAberto(aberto === r.id ? null : r.id)}
+                        className="btn btn-ghost !text-sm !py-2 !px-4"
                       >
-                        Marcar entregue
+                        Detalhes
                       </button>
-                    )}
+                      {!r.kit_agendado && !r.kit_entregue && (
+                        <button
+                          onClick={() => marcarAgendado(r.id)}
+                          className="btn btn-gold !text-sm !py-2 !px-4"
+                        >
+                          Marcar agendado
+                        </button>
+                      )}
+                      {!r.kit_entregue && (
+                        <button
+                          onClick={() => marcarEntregue(r.id)}
+                          className="btn btn-teal !text-sm !py-2 !px-4"
+                        >
+                          Marcar entregue
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
                 {aberto === r.id && (
                   <tr className="bg-[#FCF9F6]">
-                    <td colSpan={7} className="p-4 text-[13px] text-inksoft">
+                    <td colSpan={7} className="p-5 text-[13px] text-inksoft">
                       <div className="grid grid-cols-3 gap-x-6 gap-y-2.5">
                         <div><b className="block text-[11px] uppercase text-ink">CPF</b>{r.cpf || "—"}</div>
                         <div><b className="block text-[11px] uppercase text-ink">RG</b>{r.rg || "—"}</div>
@@ -119,6 +146,7 @@ export default function InscricoesPage() {
                         <div><b className="block text-[11px] uppercase text-ink">Quer kit</b>{r.quer_kit ? "Sim" : "Não"}</div>
                         <div><b className="block text-[11px] uppercase text-ink">Observações</b>{r.observacoes || "—"}</div>
                         <div><b className="block text-[11px] uppercase text-ink">Cadastrado em</b>{new Date(r.criado_em).toLocaleString("pt-BR")}</div>
+                        <div><b className="block text-[11px] uppercase text-ink">Agendamento</b>{r.kit_agendado ? `Agendado em ${new Date(r.kit_agendado_em!).toLocaleString("pt-BR")}` : "Não agendado"}</div>
                         <div><b className="block text-[11px] uppercase text-ink">Entrega do kit</b>{r.kit_entregue ? `Entregue em ${new Date(r.kit_entregue_em!).toLocaleString("pt-BR")}` : "Pendente"}</div>
                       </div>
                     </td>

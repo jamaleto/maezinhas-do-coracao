@@ -33,7 +33,8 @@ export default function DashboardPage() {
 
   const total = registros.length;
   const entregues = registros.filter((r) => r.kit_entregue).length;
-  const pendentes = total - entregues;
+  const agendados = registros.filter((r) => r.kit_agendado && !r.kit_entregue).length;
+  const pendentes = total - entregues - agendados;
   const pct = total ? Math.round((entregues / total) * 100) : 0;
 
   const byRegiao: Record<string, number> = {};
@@ -56,9 +57,10 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
         {[
           [total, "Inscritas no total"],
+          [agendados, "Kits agendados"],
           [entregues, "Kits entregues"],
           [pendentes, "Kits pendentes"],
           [`${pct}%`, "Taxa de entrega"],
@@ -74,7 +76,7 @@ export default function DashboardPage() {
         <h4 className="text-base font-semibold mb-4">Regiões com maior retirada de kit</h4>
         {regRank.length ? (
           regRank.map(([nome, count]) => (
-            <RankRow key={nome} nome={nome} count={count} max={maxReg} color="#C6707A" />
+            <RankRow key={nome} nome={nome} count={count} max={maxReg} color="#E0157B" />
           ))
         ) : (
           <div className="text-center py-8 text-inksoft">Nenhum kit entregue ainda.</div>
@@ -85,7 +87,7 @@ export default function DashboardPage() {
         <h4 className="text-base font-semibold mb-4">Inscrições por posto de saúde</h4>
         {postoRank.length ? (
           postoRank.map(([nome, count]) => (
-            <RankRow key={nome} nome={nome} count={count} max={maxPosto} color="#2F6F62" />
+            <RankRow key={nome} nome={nome} count={count} max={maxPosto} color="#1E7FB0" />
           ))
         ) : (
           <div className="text-center py-8 text-inksoft">Nenhuma inscrição ainda.</div>

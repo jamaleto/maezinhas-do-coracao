@@ -29,14 +29,15 @@ export default function RelatoriosPage() {
     const rows = registros!.filter((r) => {
       if (regiaoF && r.regiao !== regiaoF) return false;
       if (statusF === "entregue" && !r.kit_entregue) return false;
-      if (statusF === "pendente" && r.kit_entregue) return false;
+      if (statusF === "agendado" && !(r.kit_agendado && !r.kit_entregue)) return false;
+      if (statusF === "pendente" && (r.kit_entregue || r.kit_agendado)) return false;
       return true;
     });
 
     const headers = [
       "Nome", "CPF", "RG", "Nascimento", "CEP", "Endereco", "Regiao", "Telefone1", "Telefone2", "Telefone3",
       "Email", "CartaoSUS", "Posto", "SemanasGestacao", "GestacaoRisco", "QuerKit",
-      "KitEntregue", "DataEntrega", "CadastradoEm",
+      "KitAgendado", "DataAgendamento", "KitEntregue", "DataEntrega", "CadastradoEm",
     ];
     const csvRows = [headers.join(";")];
 
@@ -44,6 +45,8 @@ export default function RelatoriosPage() {
       const line = [
         r.nome, r.cpf, r.rg, r.nascimento, r.cep, r.endereco, r.regiao, r.tel1, r.tel2, r.tel3, r.email,
         r.sus, r.posto, r.semanas_gestacao, r.gestacao_risco, r.quer_kit ? "Sim" : "Nao",
+        r.kit_agendado ? "Sim" : "Nao",
+        r.kit_agendado_em ? new Date(r.kit_agendado_em).toLocaleDateString("pt-BR") : "",
         r.kit_entregue ? "Sim" : "Nao",
         r.kit_entregue_em ? new Date(r.kit_entregue_em).toLocaleDateString("pt-BR") : "",
         new Date(r.criado_em).toLocaleDateString("pt-BR"),
@@ -82,6 +85,7 @@ export default function RelatoriosPage() {
         <select value={statusF} onChange={(e) => setStatusF(e.target.value)} className="input max-w-[220px]">
           <option value="">Todos os status</option>
           <option value="entregue">Somente entregues</option>
+          <option value="agendado">Somente agendados</option>
           <option value="pendente">Somente pendentes</option>
         </select>
       </div>

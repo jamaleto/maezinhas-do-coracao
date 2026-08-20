@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-const HeartIcon = ({ size = 26, color = "#C6707A" }: { size?: number; color?: string }) => (
+const HeartIcon = ({ size = 26, color = "#E0157B" }: { size?: number; color?: string }) => (
   <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
     <path
       d="M16 27C16 27 4 20.2 4 12.4C4 8.3 7.2 5 11.1 5C13.2 5 15.1 6 16 7.6C16.9 6 18.8 5 20.9 5C24.8 5 28 8.3 28 12.4C28 20.2 16 27 16 27Z"
@@ -102,8 +102,8 @@ export default function CadastroPage() {
     <div>
       {/* TOPBAR */}
       <div className="flex items-center justify-between px-8 py-4 bg-white border-b border-line sticky top-0 z-50">
-        <div className="flex items-center gap-2.5">
-          <HeartIcon />
+        <div className="flex items-center gap-3">
+          <img src="/logo-maezinhas.jpg" alt="Mãezinhas do Coração" className="w-11 h-11 rounded-full object-cover" />
           <div>
             <h1 className="text-xl font-semibold">Mãezinhas do Coração</h1>
             <div className="text-[11px] text-inksoft uppercase tracking-wide">
@@ -121,7 +121,7 @@ export default function CadastroPage() {
         <div className="max-w-5xl mx-auto grid md:grid-cols-[1.1fr_.9fr] gap-14 items-center">
           <div>
             <div className="flex items-center gap-2 text-rose-dark font-semibold text-[13px] uppercase tracking-wide mb-4">
-              <HeartIcon size={14} color="#A85764" />
+              <HeartIcon size={14} color="#B10F63" />
               Acolhimento a quem espera
             </div>
             <h2 className="text-4xl md:text-[44px] leading-tight mb-4">
@@ -136,13 +136,13 @@ export default function CadastroPage() {
             </a>
           </div>
           <svg viewBox="0 0 360 320" fill="none" className="w-full max-w-xs mx-auto">
-            <circle cx="180" cy="160" r="150" fill="#F4E4E4" />
+            <circle cx="180" cy="160" r="150" fill="#FBDCE9" />
             <path
               d="M180 210C180 210 110 168 110 122C110 98 128 80 151 80C164 80 176 87 180 97C184 87 196 80 209 80C232 80 250 98 250 122C250 168 180 210 180 210Z"
-              fill="#C6707A"
+              fill="#E0157B"
             />
-            <rect x="140" y="220" width="80" height="60" rx="8" fill="#2F6F62" />
-            <path d="M140 236H220" stroke="#E1EEE9" strokeWidth="3" />
+            <rect x="140" y="220" width="80" height="60" rx="8" fill="#1E7FB0" />
+            <path d="M140 236H220" stroke="#DCEEF7" strokeWidth="3" />
             <circle cx="180" cy="252" r="10" fill="#D9A441" />
           </svg>
         </div>

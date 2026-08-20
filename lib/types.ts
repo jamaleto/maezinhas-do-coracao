@@ -19,6 +19,8 @@ export type Gestante = {
   quer_kit: boolean;
   consentimento: boolean;
   consentimento_em: string | null;
+  kit_agendado: boolean;
+  kit_agendado_em: string | null;
   kit_entregue: boolean;
   kit_entregue_em: string | null;
   criado_em: string;
