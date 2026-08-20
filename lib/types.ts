@@ -1,0 +1,25 @@
+export type Gestante = {
+  id: string;
+  nome: string;
+  nascimento: string | null;
+  cpf: string | null;
+  rg: string | null;
+  endereco: string | null;
+  cep: string | null;
+  regiao: string;
+  email: string | null;
+  tel1: string;
+  tel2: string | null;
+  tel3: string | null;
+  sus: string | null;
+  posto: string | null;
+  semanas_gestacao: number | null;
+  gestacao_risco: string | null;
+  observacoes: string | null;
+  quer_kit: boolean;
+  consentimento: boolean;
+  consentimento_em: string | null;
+  kit_entregue: boolean;
+  kit_entregue_em: string | null;
+  criado_em: string;
+};
