@@ -121,7 +121,7 @@ export default function CadastroPage() {
         <div className="max-w-5xl mx-auto grid md:grid-cols-[1.1fr_.9fr] gap-14 items-center">
           <div>
             <div className="flex items-center gap-2 text-rose-dark font-semibold text-[13px] uppercase tracking-wide mb-4">
-              <HeartIcon size={14} color="#B10F63" />
+              <img src="/logo-maezinhas.jpg" alt="" className="w-4 h-4 rounded-full object-cover" />
               Acolhimento a quem espera
             </div>
             <h2 className="text-4xl md:text-[44px] leading-tight mb-4">
@@ -135,16 +135,13 @@ export default function CadastroPage() {
               Quero me cadastrar
             </a>
           </div>
-          <svg viewBox="0 0 360 320" fill="none" className="w-full max-w-xs mx-auto">
-            <circle cx="180" cy="160" r="150" fill="#FBDCE9" />
-            <path
-              d="M180 210C180 210 110 168 110 122C110 98 128 80 151 80C164 80 176 87 180 97C184 87 196 80 209 80C232 80 250 98 250 122C250 168 180 210 180 210Z"
-              fill="#E0157B"
+          <div className="w-full max-w-xs mx-auto aspect-square rounded-full bg-rose-tint flex items-center justify-center p-10">
+            <img
+              src="/logo-maezinhas.jpg"
+              alt="Mãezinhas do Coração"
+              className="w-full h-full object-contain"
             />
-            <rect x="140" y="220" width="80" height="60" rx="8" fill="#1E7FB0" />
-            <path d="M140 236H220" stroke="#DCEEF7" strokeWidth="3" />
-            <circle cx="180" cy="252" r="10" fill="#D9A441" />
-          </svg>
+          </div>
         </div>
       </section>
 
