@@ -15,6 +15,7 @@ export type Gestante = {
   posto: string | null;
   semanas_gestacao: number | null;
   gestacao_risco: string | null;
+  sexo_bebe: string | null;
   observacoes: string | null;
   quer_kit: boolean;
   consentimento: boolean;

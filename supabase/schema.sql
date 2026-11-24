@@ -11,6 +11,7 @@
 --   alter table public.gestantes alter column sus drop not null;
 --   alter table public.gestantes alter column posto drop not null;
 --   alter table public.gestantes add constraint cpf_ou_rg check (cpf is not null or rg is not null);
+--   alter table public.gestantes add column if not exists sexo_bebe text;
 
 create table if not exists public.gestantes (
   id uuid primary key default gen_random_uuid(),
@@ -29,6 +30,7 @@ create table if not exists public.gestantes (
   posto text,
   semanas_gestacao int,
   gestacao_risco text,
+  sexo_bebe text,
   observacoes text,
   quer_kit boolean default true,
   consentimento boolean not null default false,
@@ -96,6 +98,7 @@ create or replace function public.cadastrar_gestante(
   p_posto text,
   p_semanas_gestacao int,
   p_gestacao_risco text,
+  p_sexo_bebe text,
   p_observacoes text,
   p_quer_kit boolean,
   p_consentimento boolean
@@ -115,11 +118,11 @@ begin
   insert into public.gestantes (
     nome, nascimento, cpf, rg, endereco, cep, regiao, email,
     tel1, tel2, tel3, sus, posto, semanas_gestacao, gestacao_risco,
-    observacoes, quer_kit, consentimento, consentimento_em
+    sexo_bebe, observacoes, quer_kit, consentimento, consentimento_em
   ) values (
     p_nome, p_nascimento, p_cpf, p_rg, p_endereco, p_cep, p_regiao, p_email,
     p_tel1, p_tel2, p_tel3, p_sus, p_posto, p_semanas_gestacao, p_gestacao_risco,
-    p_observacoes, p_quer_kit, true, now()
+    p_sexo_bebe, p_observacoes, p_quer_kit, true, now()
   );
 end;
 $$;

@@ -78,6 +78,7 @@ export default function CadastroPage() {
       p_posto: String(fd.get("posto") || "").trim() || null,
       p_semanas_gestacao: Number(fd.get("semanas")) || null,
       p_gestacao_risco: String(fd.get("risco") || "") || null,
+      p_sexo_bebe: String(fd.get("sexo_bebe") || "") || null,
       p_observacoes: String(fd.get("obs") || "").trim() || null,
       p_quer_kit: fd.get("kit") === "on",
       p_consentimento: true,
@@ -289,6 +290,14 @@ export default function CadastroPage() {
                     <option value="sim">Sim</option>
                   </select>
                 </div>
+              </div>
+              <div className="mb-4">
+                <label className="label">Sexo do bebê (opcional)</label>
+                <select name="sexo_bebe" className="input">
+                  <option value="">Não sei / não informar</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="feminino">Feminino</option>
+                </select>
               </div>
               <div>
                 <label className="label">Observações (alergias, necessidades especiais, etc.)</label>

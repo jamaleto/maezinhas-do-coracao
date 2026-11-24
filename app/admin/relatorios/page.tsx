@@ -36,20 +36,24 @@ export default function RelatoriosPage() {
 
     const headers = [
       "Nome", "CPF", "RG", "Nascimento", "CEP", "Endereco", "Regiao", "Telefone1", "Telefone2", "Telefone3",
-      "Email", "CartaoSUS", "Posto", "SemanasGestacao", "GestacaoRisco", "QuerKit",
-      "KitAgendado", "DataAgendamento", "KitEntregue", "DataEntrega", "CadastradoEm",
+      "Email", "CartaoSUS", "Posto", "SemanasGestacao", "GestacaoRisco", "SexoBebe", "QuerKit",
+      "KitAgendado", "DataAgendamento", "KitEntregue", "DataEntrega", "CadastradoEm", "TempoDeEsperaDias",
     ];
     const csvRows = [headers.join(";")];
 
     rows.forEach((r) => {
+      const inicio = new Date(r.criado_em).getTime();
+      const fim = r.kit_entregue && r.kit_entregue_em ? new Date(r.kit_entregue_em).getTime() : Date.now();
+      const diasEspera = Math.max(0, Math.floor((fim - inicio) / (1000 * 60 * 60 * 24)));
       const line = [
         r.nome, r.cpf, r.rg, r.nascimento, r.cep, r.endereco, r.regiao, r.tel1, r.tel2, r.tel3, r.email,
-        r.sus, r.posto, r.semanas_gestacao, r.gestacao_risco, r.quer_kit ? "Sim" : "Nao",
+        r.sus, r.posto, r.semanas_gestacao, r.gestacao_risco, r.sexo_bebe, r.quer_kit ? "Sim" : "Nao",
         r.kit_agendado ? "Sim" : "Nao",
         r.kit_agendado_em ? new Date(r.kit_agendado_em).toLocaleDateString("pt-BR") : "",
         r.kit_entregue ? "Sim" : "Nao",
         r.kit_entregue_em ? new Date(r.kit_entregue_em).toLocaleDateString("pt-BR") : "",
         new Date(r.criado_em).toLocaleDateString("pt-BR"),
+        diasEspera,
       ].map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`);
       csvRows.push(line.join(";"));
     });
